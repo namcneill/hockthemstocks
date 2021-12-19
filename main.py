@@ -1,6 +1,7 @@
 from pprintpp import pprint
 import pandas as pd
 import matplotlib.pyplot as plt
+import datametrics as dm
 import numpy as np
 
 
@@ -42,10 +43,6 @@ def plot_data(data, x_label, y_label, title):
     plt.show()
 
 
-def pct_daily_returns(data):
-    return (data.iloc[1:] / data.iloc[:-1].values) - 1
-
-
 def main():
     data_dir = 'stockdata\\'
     tickers = ['AAPL', 'GOOG', 'MSFT']
@@ -54,9 +51,15 @@ def main():
     date_range = pd.date_range(start_date, end_date)
     df_data = get_data(data_dir, tickers, date_range)
     norm_data = normalize_data(df_data)
-    pprint(norm_data)
-    plot_data(norm_data, x_label='Time', y_label='Normalized Gains', title='Normalized TechStock Growth')
-    plot_data(df_data, x_label='Time', y_label='Gains', title='TechStock Growth')
+    pdr = dm.pct_daily_returns(df_data)
+    r_avg = dm.rolling_avg(df_data, 5)
+    pprint(r_avg)
+    pprint(df_data)
+    # pprint(pdr)
+    # pprint(norm_data)
+    # plot_data(pdr, x_label='Time', y_label='Daily Gains', title='Daily TechStock Growth')
+    # plot_data(norm_data, x_label='Time', y_label='Normalized Gains', title='Normalized TechStock Growth')
+    # plot_data(df_data, x_label='Time', y_label='Gains', title='TechStock Growth')
 
 
 if __name__ == '__main__':
