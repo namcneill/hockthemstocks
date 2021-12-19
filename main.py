@@ -1,8 +1,6 @@
-from pprintpp import pprint
 import pandas as pd
 import matplotlib.pyplot as plt
 import datametrics as dm
-import numpy as np
 
 
 def ticker_to_path(data_path, ticker):
@@ -52,25 +50,6 @@ def main():
     data_metrics = dm.DataMetrics(data_dir=data_dir, tickers=tickers, start_date=start_date, end_date=end_date)
 
     data_metrics.plot_metrics('MSFT')
-
-    # data_dir = 'stockdata\\'
-    # tickers = ['AAPL', 'GOOG', 'MSFT']
-    # start_date = '2010-01-01'
-    # end_date = '2021-12-12'
-    # date_range = pd.date_range(start_date, end_date)
-    # df_data = raw_data(data_dir, tickers, date_range)
-    # norm_data = normalize_data(df_data)
-    # pdr = dm.pct_daily_returns(df_data)
-    # r_avg = dm.rolling_avg(df_data)
-    # b_bands_up, b_bands_down = dm.bollinger_bands(df_data)
-    # plot_data(b_bands_up, x_label='Time', y_label='Daily Gains', title='Daily TechStock Growth')
-    # pprint(r_avg)
-    # pprint(df_data)
-    # pprint(pdr)
-    # pprint(norm_data)
-    # plot_data(pdr, x_label='Time', y_label='Daily Gains', title='Daily TechStock Growth')
-    # plot_data(norm_data, x_label='Time', y_label='Normalized Gains', title='Normalized TechStock Growth')
-    # plot_data(df_data, x_label='Time', y_label='Gains', title='TechStock Growth')
 
 
 if __name__ == '__main__':

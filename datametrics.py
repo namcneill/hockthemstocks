@@ -36,7 +36,6 @@ class DataMetrics:
 
         return df_adj_close
 
-
     @property
     def pct_daily_returns(self):
         return (self.raw_data.iloc[1:] / self.raw_data.iloc[:-1].values) - 1
@@ -68,9 +67,3 @@ class DataMetrics:
 
 def ticker_to_path(data_path, ticker):
     return data_path + ticker + '.csv'
-
-
-
-
-
-
