@@ -42,7 +42,8 @@ def plot_data(data, x_label, y_label, title):
     plt.show()
 
 
-def moving_avg(period):
+def pct_daily_returns(data):
+    return (data.iloc[1:] / data.iloc[:-1].values) + 1
 
 
 def main():
