@@ -1,5 +1,6 @@
 # method library
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 from dataclasses import dataclass
 
@@ -10,7 +11,7 @@ class DataMetrics:
     tickers: list
     start_date: str
     end_date: str
-    period: int = 20
+    ra_period: int = 20
 
     @property
     def date_range(self):
@@ -42,15 +43,40 @@ class DataMetrics:
 
     @property
     def rolling_avg(self):
-        rolling_windows = self.raw_data.rolling(self.period, min_periods=1)
+        rolling_windows = self.raw_data.rolling(self.ra_period, min_periods=1)
         return rolling_windows.mean()
 
     @property
     def bollinger_bands(self):
-        std = self.raw_data.rolling(self.period, min_periods=1).std()
+        std = self.raw_data.rolling(self.ra_period, min_periods=1).std()
         boll_up = self.rolling_avg + std * 2
         boll_down = self.rolling_avg - std * 2
         return boll_up, boll_down
+
+    def poly_regression(self, ticker, poly_period):
+        concavity = pd.DataFrame(index=self.raw_data.index)
+        con_vals = np.array([])
+
+        for window in self.raw_data[ticker].rolling(poly_period, min_periods=poly_period):
+            size = len(window.index)
+            if size >= poly_period:
+                window = (window / window[0])
+                x = np.linspace(0, size - 1, size)
+                y = window.to_numpy()
+                pfit = np.polyfit(x, y, 2)
+                con_vals = np.append(con_vals, pfit[0])
+            else:
+                con_vals = np.append(con_vals, 0.0)
+
+        concavity[ticker] = con_vals.tolist()
+        return concavity
+
+    def multi_poly(self, poly_period):
+        data_concavity = pd.DataFrame(index=self.raw_data.index)
+        for ticker in self.tickers:
+            single_poly = self.poly_regression(ticker, poly_period)
+            data_concavity = data_concavity.join(single_poly)
+        return data_concavity
 
     def plot_metrics(self, symbol):
         main_plot = self.raw_data[symbol].plot()

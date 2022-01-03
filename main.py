@@ -49,7 +49,10 @@ def main():
 
     data_metrics = dm.DataMetrics(data_dir=data_dir, tickers=tickers, start_date=start_date, end_date=end_date)
 
-    data_metrics.plot_metrics('MSFT')
+    # data_metrics.plot_metrics('MSFT')
+    # print(data_metrics.multi_poly(50))
+
+    plot_data(data_metrics.multi_poly(50), "Time", "Concavity", "Concavity")
 
 
 if __name__ == '__main__':
